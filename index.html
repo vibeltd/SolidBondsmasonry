@@ -41,8 +41,9 @@
             padding: 8rem 1rem 2rem;
         }
         .project-feed {
-            display: grid;
-            gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
         .project-card {
             background-color: white;
@@ -50,10 +51,21 @@
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .project-card img {
-            width: 100%;
-            height: 300px;
+        .project-gallery {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 1rem;
+        }
+        .project-gallery img {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 200px;
             object-fit: cover;
+            margin-right: 1rem;
+            scroll-snap-align: start;
+            border-radius: 4px;
         }
         .project-card p {
             padding: 1rem;
@@ -83,12 +95,6 @@
         .social-links a:hover {
             text-decoration: underline;
         }
-        #load-more {
-            text-align: center;
-            padding: 1rem;
-            font-style: italic;
-            color: #777;
-        }
         @media (max-width: 600px) {
             header h1 {
                 font-size: 1.5rem;
@@ -96,8 +102,9 @@
             header p {
                 font-size: 0.8rem;
             }
-            .project-card img {
-                height: 200px;
+            .project-gallery img {
+                width: 200px;
+                height: 150px;
             }
             .container {
                 padding: 7rem 0.5rem 1rem;
@@ -113,9 +120,8 @@
 
     <div class="container">
         <div class="project-feed" id="project-feed">
-            <!-- Initial projects will be loaded here -->
+            <!-- Projects will be loaded here -->
         </div>
-        <div id="load-more">Loading more projects...</div>
     </div>
 
     <section class="contact-section">
@@ -143,51 +149,59 @@
     </script>
     <!-- End of Tawk.to Script -->
 
-    <!-- Infinite Scroll Script -->
+    <!-- Project Gallery Script -->
     <script>
         const projectFeed = document.getElementById('project-feed');
-        const loadMore = document.getElementById('load-more');
 
-        // Project data with your uploaded AI-generated images (spaces encoded as %20)
+        // Project data with grouped images (up to 3 per project)
         const projects = [
-            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%201.jpg', desc: 'Elegant brick facade for a luxury townhouse, built with heart.' },
-            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%202.jpg', desc: 'Custom brickwork for a modern boutique residence, fostering strong client bonds.' },
-            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%203.jpg', desc: 'Restored brick wall for a high-end renovation, reflecting our team’s camaraderie.' },
-            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%204.jpg', desc: 'Bespoke brick detailing for a luxury garden wall, showcasing our craft.' },
+            {
+                images: [
+                    'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%201.jpg',
+                    'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%202.jpg',
+                    'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%203.jpg'
+                ],
+                desc: 'Luxury Townhouse Renovation – Elegant brick facade and detailing, built with heart.'
+            },
+            {
+                images: [
+                    'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%204.jpg'
+                ],
+                desc: 'Boutique Garden Wall – Bespoke brickwork showcasing our craft.'
+            }
         ];
 
-        let currentIndex = 0;
-        const projectsPerLoad = 1;
-
+        // Function to load all projects
         function loadProjects() {
-            const endIndex = Math.min(currentIndex + projectsPerLoad, projects.length);
-            for (let i = currentIndex; i < endIndex; i++) {
-                const project = projects[i];
+            projects.forEach(project => {
                 const projectCard = document.createElement('div');
                 projectCard.className = 'project-card';
-                projectCard.innerHTML = `
-                    <img src="${project.img}" alt="Bricklaying Project">
-                    <p>${project.desc}</p>
-                `;
-                projectFeed.appendChild(projectCard);
-            }
-            currentIndex = endIndex;
 
-            // Hide "Loading more..." if all projects are loaded
-            if (currentIndex >= projects.length) {
-                loadMore.style.display = 'none';
-            }
+                // Create the gallery container
+                const gallery = document.createElement('div');
+                gallery.className = 'project-gallery';
+
+                // Add images to the gallery
+                project.images.forEach(imgSrc => {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = 'Bricklaying Project Image';
+                    gallery.appendChild(img);
+                });
+
+                // Add the gallery and description to the project card
+                projectCard.appendChild(gallery);
+                const desc = document.createElement('p');
+                desc.textContent = project.desc;
+                projectCard.appendChild(desc);
+
+                // Add the project card to the feed
+                projectFeed.appendChild(projectCard);
+            });
         }
 
-        // Initial load
+        // Load all projects on page load
         loadProjects();
-
-        // Infinite scroll
-        window.addEventListener('scroll', () => {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && currentIndex < projects.length) {
-                loadProjects();
-            }
-        });
     </script>
 </body>
 </html>
