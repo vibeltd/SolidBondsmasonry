@@ -124,11 +124,70 @@
         <p>Email: <a href="mailto:info@solidbondsmasonry.com">info@solidbondsmasonry.com</a></p>
         <p>Phone: +44 123 456 7890</p>
         <div class="social-links">
-            <a href="https://instagram.com/solidbondsmasonry" target="_blank">Instagram</a>
+            <a href="https://instagram.com/solidbondmasonry" target="_blank">Instagram</a>
             <a href="mailto:info@solidbondsmasonry.com">Email</a>
         </div>
     </section>
 
-    <!-- Tawk.to Chatbot Script -->
+    <!-- Start of Tawk.to Script -->
     <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/680ee6dad22d79190b3eae27/1ipt3bhim';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!-- End of Tawk.to Script -->
+
+    <!-- Infinite Scroll Script -->
+    <script>
+        const projectFeed = document.getElementById('project-feed');
+        const loadMore = document.getElementById('load-more');
+
+        // Project data with your uploaded AI-generated images (spaces encoded as %20)
+        const projects = [
+            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%201.jpg', desc: 'Elegant brick facade for a luxury townhouse, built with heart.' },
+            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%202.jpg', desc: 'Custom brickwork for a modern boutique residence, fostering strong client bonds.' },
+            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%203.jpg', desc: 'Restored brick wall for a high-end renovation, reflecting our team’s camaraderie.' },
+            { img: 'https://raw.githubusercontent.com/vibeltd/solidbondmasonry/main/image%204.jpg', desc: 'Bespoke brick detailing for a luxury garden wall, showcasing our craft.' },
+        ];
+
+        let currentIndex = 0;
+        const projectsPerLoad = 1;
+
+        function loadProjects() {
+            const endIndex = Math.min(currentIndex + projectsPerLoad, projects.length);
+            for (let i = currentIndex; i < endIndex; i++) {
+                const project = projects[i];
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                projectCard.innerHTML = `
+                    <img src="${project.img}" alt="Bricklaying Project">
+                    <p>${project.desc}</p>
+                `;
+                projectFeed.appendChild(projectCard);
+            }
+            currentIndex = endIndex;
+
+            // Hide "Loading more..." if all projects are loaded
+            if (currentIndex >= projects.length) {
+                loadMore.style.display = 'none';
+            }
+        }
+
+        // Initial load
+        loadProjects();
+
+        // Infinite scroll
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && currentIndex < projects.length) {
+                loadProjects();
+            }
+        });
+    </script>
+</body>
+</html>
