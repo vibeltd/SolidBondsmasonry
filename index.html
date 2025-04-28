@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Solid Bonds Masonry | High-End Bricklaying Kent Essex</title>
     <meta name="description" content="Solid Bonds Masonry provides high-end bricklaying for private extensions and boutique projects in Kent and Essex. Quality brickwork with heart.">
     <meta name="keywords" content="bricklaying Kent Essex, private extensions masonry, luxury brickwork, boutique construction, masonry with heart, solid bonds masonry">
@@ -208,7 +209,7 @@
         const projectFeed = document.getElementById('project-feed');
         const loadMore = document.getElementById('load-more');
 
-        // Project data with corrected image URLs (lowercase "image")
+        // Project data with raw GitHub URLs
         const projects = [
             {
                 title: 'Project 1: Luxury Townhouse Extension',
@@ -240,7 +241,7 @@
                     <div class="photo-gallery">
                         ${project.photos.map(photo => `
                             <div class="photo-card">
-                                <img src="${photo.img}" alt="${photo.desc}" width="300" height="200">
+                                <img src="${photo.img}" alt="${photo.desc}" width="300" height="200" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Found'; this.alt='Image not found';">
                                 <p>${photo.desc} <a href="#project-feed">See more projects</a></p>
                             </div>
                         `).join('')}
